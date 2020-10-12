@@ -15,7 +15,7 @@ open class CollectionViewManager<Section: Hashable, Item: Hashable>: NSObject, U
     
     open var cellForRow: UICollectionViewDiffableDataSource<Section, Item>.CellProvider?
     
-    open var selectedItemPublisher = PassthroughSubject<Item, Never>()
+    open var selectedItemPublisher = PassthroughSubject<IndexPath, Never>()
     open var willDisplayCellPublisher = PassthroughSubject<(cell: UICollectionViewCell, indexPath: IndexPath), Never>()
     open var cellDisappearedPublisher = PassthroughSubject<(cell: UICollectionViewCell, indexPath: IndexPath), Never>()
     
@@ -66,6 +66,13 @@ open class CollectionViewManager<Section: Hashable, Item: Hashable>: NSObject, U
         forItemAt indexPath: IndexPath
     ) {
         cellDisappearedPublisher.send((cell, indexPath))
+    }
+    
+    open func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        selectedItemPublisher.send(indexPath)
     }
 }
 
